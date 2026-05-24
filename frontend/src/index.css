@@ -1647,20 +1647,28 @@ input[type="checkbox"] {
 .stories-section-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
+  align-items: flex-end;
+  gap: 14px;
+  margin-bottom: 22px;
 }
 
 .stories-section-title {
   font-size: 2rem;
   font-weight: 800;
   color: #111827;
+  margin: 0;
+  line-height: 1.05;
 }
 
 .stories-section-link {
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
   color: #6b7280;
   font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1;
+  margin: 0;
   transition: 0.3s ease;
   cursor: none !important;
 }
