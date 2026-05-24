@@ -24,6 +24,20 @@ function StorySection({
       .trim();
   };
 
+  const getCategoryBadgeClass = (category) => {
+    const value = (category?.slug || category?.title || "").toLowerCase().trim();
+    if (!value) return "cat-general";
+    if (value.includes("science")) return "cat-science";
+    if (value.includes("technology") || value.includes("tech")) return "cat-technology";
+    if (value.includes("business")) return "cat-business";
+    if (value.includes("culture")) return "cat-culture";
+    if (value.includes("travel")) return "cat-travel";
+    if (value.includes("food")) return "cat-food";
+    if (value.includes("lifestyle")) return "cat-lifestyle";
+    if (value.includes("health")) return "cat-health";
+    return "cat-general";
+  };
+
   const handleAuthorNavigate = (e, profileId) => {
     e.stopPropagation();
 
@@ -69,7 +83,7 @@ function StorySection({
                 {/* CONTENT */}
                 <div className="col-lg-6">
                   <div className="trending-hero-body">
-                    <div className="trending-badge">
+                    <div className={`trending-badge ${getCategoryBadgeClass(heroPost.category)}`}>
                       {heroPost.category?.title || "Featured"}
                     </div>
 
@@ -134,7 +148,7 @@ function StorySection({
 
               <div className="trending-small-body">
                 <div className="trending-small-top">
-                  <div className="trending-small-badge">
+                  <div className={`trending-small-badge ${getCategoryBadgeClass(post.category)}`}>
                     {post.category?.title || "Technology"}
                   </div>
 
@@ -185,7 +199,7 @@ function StorySection({
                 </div>
 
                 <div className="story-grid-body">
-                  <div className="story-grid-category">
+                  <div className={`story-grid-category ${getCategoryBadgeClass(post.category)}`}>
                     {post.category?.title || "Technology"}
                   </div>
 

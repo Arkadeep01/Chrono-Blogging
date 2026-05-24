@@ -183,27 +183,33 @@ function Index() {
               </div>
             </div>
 
-            {/* TRENDING SECTION */}
-            <div className="col-lg-9">
-              <TrendingSection
-                title="Trending Stories"
-                posts={trendingPosts}
-                maxPosts={6}
-                showHeader={true}
-                withContainer={false}
-              />
-              <TrendingSection
-                title="Popular Stories"
-                posts={popularPosts}
-                maxPosts={6}
-                withContainer={false}
-              />
-              <TrendingSection
-                title="Latest Stories"
-                posts={latestPosts}
-                maxPosts={6}
-                withContainer={false}
-              />
+            {/* STORIES SECTION */}
+            <div className="col-lg-9 stories-stack">
+              <div className="home-story-block">
+                <TrendingSection
+                  title="Trending Stories"
+                  posts={trendingPosts}
+                  maxPosts={6}
+                  showHeader={true}
+                  withContainer={false}
+                />
+              </div>
+              <div className="home-story-block">
+                <TrendingSection
+                  title="Popular Stories"
+                  posts={popularPosts}
+                  maxPosts={6}
+                  withContainer={false}
+                />
+              </div>
+              <div className="home-story-block">
+                <TrendingSection
+                  title="Latest Stories"
+                  posts={latestPosts}
+                  maxPosts={6}
+                  withContainer={false}
+                />
+              </div>
             </div>
           </div>
         </div>
