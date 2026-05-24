@@ -7,6 +7,8 @@ import TrendingSection from "../../components/storySection";
 import apiInstance from "../../utils/axios";
 import { fetchAllPages } from "../../utils/fetchAllPages";
 
+const TRENDING_LIMIT = 10;
+
 function Index() {
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
@@ -51,6 +53,14 @@ function Index() {
       </>
     );
   }
+
+  const trendingPosts = [...posts]
+    .sort((a, b) => {
+      const scoreA = (a.views || 0) + (a.Likes?.length || 0) * 3;
+      const scoreB = (b.views || 0) + (b.Likes?.length || 0) * 3;
+      return scoreB - scoreA;
+    })
+    .slice(0, TRENDING_LIMIT);
 
   return (
     <>
@@ -161,7 +171,7 @@ function Index() {
             <div className="col-lg-9">
               <TrendingSection
                 title="Trending Stories"
-                posts={posts}
+                posts={trendingPosts}
                 showHeader={true}
                 withContainer={false}
               />

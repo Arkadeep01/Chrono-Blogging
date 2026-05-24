@@ -6,7 +6,7 @@ import Search from "../../components/Search";
 import apiInstance from "../../utils/axios";
 import { fetchAllPages } from "../../utils/fetchAllPages";
 
-const SECTION_LIMIT = 10;
+const SECTION_LIMIT = 6;
 
 function StoriesPage() {
   const [posts, setPosts] = useState([]);
@@ -95,6 +95,7 @@ function StoriesPage() {
             <StorySection title="Trending Stories" posts={trendingPosts} />
             <StorySection title="Popular Stories" posts={popularPosts} />
             <StorySection title="Latest Stories" posts={latestPosts} />
+            <StorySection title="All Stories" posts={filteredPosts} />
           </>
         )}
       </div>
