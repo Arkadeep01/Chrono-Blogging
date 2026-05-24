@@ -65,6 +65,19 @@ function Index() {
     })
     .slice(0, TRENDING_LIMIT);
 
+  const usedIds = new Set(trendingPosts.map((p) => p.id));
+
+  const popularPosts = [...posts]
+    .filter((p) => !usedIds.has(p.id))
+    .sort((a, b) => (b.views || 0) - (a.views || 0))
+    .slice(0, TRENDING_LIMIT);
+  popularPosts.forEach((p) => usedIds.add(p.id));
+
+  const latestPosts = [...posts]
+    .filter((p) => !usedIds.has(p.id))
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, TRENDING_LIMIT);
+
   return (
     <>
       <Header />
@@ -175,7 +188,20 @@ function Index() {
               <TrendingSection
                 title="Trending Stories"
                 posts={trendingPosts}
+                maxPosts={6}
                 showHeader={true}
+                withContainer={false}
+              />
+              <TrendingSection
+                title="Popular Stories"
+                posts={popularPosts}
+                maxPosts={6}
+                withContainer={false}
+              />
+              <TrendingSection
+                title="Latest Stories"
+                posts={latestPosts}
+                maxPosts={6}
                 withContainer={false}
               />
             </div>

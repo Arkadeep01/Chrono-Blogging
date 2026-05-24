@@ -23,6 +23,18 @@ let refreshPromise = null;
 const isRefreshRequest = (config) =>
   config?.url?.includes("user/token/refresh");
 
+const PUBLIC_ENDPOINTS = [
+  "post/lists/",
+  "post/category/list/",
+  "post/category/posts/",
+  "post/details/",
+];
+
+const isPublicRequest = (config) => {
+  const url = config?.url || "";
+  return PUBLIC_ENDPOINTS.some((endpoint) => url.startsWith(endpoint));
+};
+
 const refreshAccessToken = async (refreshToken) => {
   if (!refreshPromise) {
     refreshPromise = getRefreshToken(refreshToken).finally(() => {
@@ -36,9 +48,19 @@ apiInstance.interceptors.request.use(
   (config) => {
     const accessToken = Cookies.get(ACCESS_TOKEN_COOKIE);
 
-    // Do not send expired/invalid tokens on public routes (avoids 401 storms)
+    // Never attach auth to public endpoints.
+    if (isPublicRequest(config)) {
+      if (config.headers?.Authorization) {
+        delete config.headers.Authorization;
+      }
+      return config;
+    }
+
+    // Attach auth only for protected endpoints and valid access tokens.
     if (accessToken && !isAccessTokenExpired(accessToken)) {
       config.headers.Authorization = `Bearer ${accessToken}`;
+    } else if (config.headers?.Authorization) {
+      delete config.headers.Authorization;
     }
 
     return config;
