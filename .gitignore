@@ -26,4 +26,8 @@ htmlcov/
 Thumbs.db
 .idea/
 .vscode/
+
+# Prevent accidental root-level Node install in this mono-repo
+/node_modules/
+/package-lock.json
 node_modules
