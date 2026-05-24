@@ -15,8 +15,20 @@ function StoriesPage() {
     const loadPosts = async () => {
       try {
         setLoading(true);
-        const res = await apiInstance.get("post/lists/");
-        const data = res.data?.results || res.data || [];
+        let page = 1;
+        let data = [];
+        let hasNext = true;
+
+        while (hasNext) {
+          const res = await apiInstance.get("post/lists/", {
+            params: { page, page_size: 50 },
+          });
+          const pageResults = res.data?.results || res.data || [];
+          data = [...data, ...pageResults];
+          hasNext = Boolean(res.data?.next);
+          page += 1;
+        }
+
         setPosts(data);
         setFilteredPosts(data);
       } catch (err) {
