@@ -130,7 +130,7 @@ class CategorySerializer(serializers.ModelSerializer):
     image = AbsoluteImageField(required=False, allow_null=True)
 
     def get_post_count(self, category):
-        return category.posts.count()
+        return category.posts.filter(status="Active").count()
     
     class Meta:
         model = api_models.Category
