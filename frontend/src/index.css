@@ -1089,6 +1089,15 @@ input[type="checkbox"] {
   background: #f6f7fb;
 }
 
+.home-ad-section {
+  margin-top: 28px;
+}
+
+.home-reviews-section,
+.home-community-section {
+  margin-top: 10px;
+}
+
 .home-ad-shell {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
