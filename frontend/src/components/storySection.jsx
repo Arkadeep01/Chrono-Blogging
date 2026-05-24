@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
+import { getMediaUrl } from "../utils/media";
 
 function StorySection({
   posts = [],
@@ -55,7 +56,7 @@ function StorySection({
                 <div className="col-lg-6">
                   <div className="image-glass-wrapper">
                     <img
-                      src={heroPost.image}
+                      src={getMediaUrl(heroPost.image, "/images/default.png")}
                       alt={heroPost.title}
                       className="trending-hero-image"
                     />
@@ -122,7 +123,7 @@ function StorySection({
             >
               <div className="image-glass-wrapper">
                 <img
-                  src={post.image}
+                  src={getMediaUrl(post.image, "/images/default.png")}
                   alt={post.title}
                   className="trending-small-image"
                 />
@@ -174,7 +175,7 @@ function StorySection({
               >
                 <div className="image-glass-wrapper">
                   <img
-                    src={post.image}
+                    src={getMediaUrl(post.image, "/images/default.png")}
                     alt={post.title}
                     className="story-grid-image"
                   />

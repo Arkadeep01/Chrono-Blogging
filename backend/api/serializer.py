@@ -6,6 +6,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.tokens import Token
 
 from api import models as api_models
+from api.fields import AbsoluteImageField
 
 '''
     1. User authentication (JWT tokens)
@@ -94,6 +95,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
     email = serializers.EmailField(source='user.email', read_only=True)
     post_count = serializers.SerializerMethodField()
+    image = AbsoluteImageField(required=False, allow_null=True)
     
     class Meta:
         model = api_models.Profile
@@ -125,15 +127,8 @@ class PasswordResetSerializer(serializers.Serializer):
 # --------------------------------
 class CategorySerializer(serializers.ModelSerializer):
     post_count = serializers.SerializerMethodField()
+    image = AbsoluteImageField(required=False, allow_null=True)
 
-    '''
-        category.post_set: In Django, when you define a ForeignKey relationship from one model to another 
-        (e.g., Post model having a ForeignKey relationship to the Category model), 
-        Django creates a reverse relationship from the related model back to the model that has the ForeignKey. 
-        By default, this reverse relationship is named <model>_set. In this case, since the Post model has a 
-        ForeignKey to the Category model, Django creates a reverse relationship from Category to Post named post_set. 
-        This allows you to access all Post objects related to a Category instance.
-    '''
     def get_post_count(self, category):
         return category.posts.count()
     
@@ -146,15 +141,6 @@ class CategorySerializer(serializers.ModelSerializer):
             "slug",
             "post_count",
         ]
-        depth = 1
-
-    def __init__(self, *args, **kwargs):
-        super(CategorySerializer, self).__init__(*args, **kwargs)
-        request = self.context.get('request')
-        if request and request.method == 'POST':
-            self.Meta.depth = 0
-        else:
-            self.Meta.depth = 3
 
 
 
@@ -184,11 +170,14 @@ class PostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(source="comment_set", many=True, read_only=True)
     user_has_liked = serializers.SerializerMethodField()
     user_has_bookmarked = serializers.SerializerMethodField()
+    profile = ProfileSerializer(read_only=True)
+    category = CategorySerializer(read_only=True)
+    user = UserSerializer(read_only=True)
+    image = AbsoluteImageField(required=False, allow_null=True)
     
     class Meta:
         model = api_models.Post
         fields = "__all__"
-        depth = 1
 
     def get_user_has_liked(self, obj):
         request = self.context.get('request')
@@ -201,14 +190,6 @@ class PostSerializer(serializers.ModelSerializer):
         if request and request.user.is_authenticated:
             return api_models.Bookmark.objects.filter(post=obj, user=request.user).exists()
         return False
-
-    def __init__(self, *args, **kwargs):
-        super(PostSerializer, self).__init__(*args, **kwargs)
-        request = self.context.get('request')
-        if request and request.method == 'POST':
-            self.Meta.depth = 0
-        else:
-            self.Meta.depth = 3
 
 
 

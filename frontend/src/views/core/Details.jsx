@@ -5,6 +5,7 @@ import Footer from "../partials/footer";
 import { useParams, useNavigate } from "react-router-dom";
 import moment from "moment";
 import apiInstance from "../../utils/axios";
+import { getMediaUrl } from "../../utils/media";
 import Toast from "../../plugin/toast";
 import PostComments from "../dashboard/Comments";
 import { useAuthStore } from "../../store/auth";
@@ -154,7 +155,7 @@ function Detail() {
             <div className="detail-author-row">
               <div className="detail-author-left">
                 <img
-                  src={post.profile?.image}
+                  src={getMediaUrl(post.profile?.image, "/images/default.png")}
                   className="detail-author-image"
                   alt=""
                 />
@@ -187,7 +188,7 @@ function Detail() {
 
             {/* FEATURE IMAGE */}
             <img
-              src={post.image}
+              src={getMediaUrl(post.image, "/images/default.png")}
               className="detail-feature-image"
               alt={post.title}
             />

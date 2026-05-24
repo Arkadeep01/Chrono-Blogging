@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 
 import apiInstance from "../../utils/axios";
+import { getMediaUrl } from "../../utils/media";
 import Toast from "../../plugin/toast";
 import { useAuthStore } from "../../store/auth";
 
@@ -166,8 +167,10 @@ function Profile() {
                         <img
                           src={
                             imagePreview ||
-                            profileData.image ||
-                            "https://www.eclosio.ong/wp-content/uploads/2018/08/default.png"
+                            getMediaUrl(
+                              profileData.image,
+                              "https://www.eclosio.ong/wp-content/uploads/2018/08/default.png"
+                            )
                           }
                           alt="avatar"
                           className="profile-avatar-image"

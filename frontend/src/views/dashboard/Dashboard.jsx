@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Notifications from "./Notifications";
 
 import apiInstance from "../../utils/axios";
+import { getMediaUrl } from "../../utils/media";
 import moment from "moment";
 import Toast from "../../plugin/toast";
 import { useAuthStore } from "../../store/auth";
@@ -326,7 +327,7 @@ function Dashboard() {
                   analytics.topPosts.map((post, index) => (
                     <Link to={getPostUrl(post)} className="dashboard-top-post" key={post.id}>
                       <span className="dashboard-rank">{index + 1}</span>
-                      <img src={post.image || "/images/default.png"} alt="" />
+                      <img src={getMediaUrl(post.image, "/images/default.png")} alt="" />
                       <div>
                         <h3>{post.title}</h3>
                         <p>{moment(post.date).format("DD MMM, YYYY")}</p>

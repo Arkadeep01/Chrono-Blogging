@@ -4,6 +4,7 @@ import Footer from "../partials/footer";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import apiInstance from "../../utils/axios";
+import { getMediaUrl } from "../../utils/media";
 import Toast from "../../plugin/toast";
 import Swal from "sweetalert2";
 import { useAuthStore } from "../../store/auth";
@@ -143,7 +144,7 @@ function EditPost() {
           <form onSubmit={handleUpdatePost}>
             {/* Preview */}
             <img
-              src={imagePreview || post.image}
+              src={imagePreview || getMediaUrl(post.image, "/images/default.png")}
               className="mb-3 w-100 rounded"
               style={{ height: 300, objectFit: "cover" }}
               alt="preview"

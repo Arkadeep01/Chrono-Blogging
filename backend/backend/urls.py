@@ -31,11 +31,16 @@ urlpatterns = [
     path("api/v1/", include("api.urls"))
 ]
 
+# Serve uploaded media in development and production (API host).
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 else:
     urlpatterns += [
-        path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
-        path('static/<path:path>', serve, {'document_root': settings.STATIC_ROOT}),
+        re_path(
+            r"^static/(?P<path>.*)$",
+            serve,
+            {"document_root": settings.STATIC_ROOT},
+        ),
     ]

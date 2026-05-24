@@ -4,6 +4,7 @@ import Footer from "../partials/footer";
 import { Link, useNavigate } from "react-router-dom";
 
 import apiInstance from "../../utils/axios";
+import { getMediaUrl } from "../../utils/media";
 import moment from "moment";
 import { useAuthStore } from "../../store/auth";
 
@@ -150,7 +151,7 @@ function Posts() {
                     className="post-card-image-wrapper"
                   >
                     <img
-                      src={p.image}
+                      src={getMediaUrl(p.image, "/images/default.png")}
                       alt={p.title}
                       className="post-card-image"
                     />

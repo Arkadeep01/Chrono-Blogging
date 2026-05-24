@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Header from "../partials/header";
 import Footer from "../partials/footer";
 import apiInstance from "../../utils/axios";
+import { getMediaUrl } from "../../utils/media";
 import moment from "moment";
 
 import { Heart, MessageCircle, MapPin } from "lucide-react";
@@ -83,10 +84,10 @@ function AuthorProfile() {
           <div className="author-profile-top">
             {/* IMAGE */}
             <img
-              src={
-                author?.image ||
+              src={getMediaUrl(
+                author?.image,
                 "https://www.eclosio.ong/wp-content/uploads/2018/08/default.png"
-              }
+              )}
               alt=""
               className="author-profile-image"
             />

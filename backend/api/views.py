@@ -14,6 +14,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.pagination import PageNumberPagination
 
@@ -57,6 +58,7 @@ class RegisterView(generics.CreateAPIView):
 class ProfileView(generics.RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = api_serializer.ProfileSerializer
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get_object(self) -> Any:
         user = self.request.user
@@ -517,11 +519,12 @@ class DashboardReplyCommentAPIView(APIView):
 class DashboardPostCreateAPIView(generics.CreateAPIView):
     serializer_class = api_serializer.PostSerializer
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def create(self, request, *args, **kwargs):
         user = request.user
         title = request.data.get('title')
-        image = request.data.get('image')
+        image = request.FILES.get('image') or request.data.get('image')
         description = request.data.get('description')
         tags = request.data.get('tags')
         category_id = request.data.get('category')
@@ -557,6 +560,7 @@ class DashboardPostCreateAPIView(generics.CreateAPIView):
 class DashboardUpdatePostAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = api_serializer.PostSerializer
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get_object(self) -> Any:
         user = self.request.user
@@ -567,7 +571,7 @@ class DashboardUpdatePostAPIView(generics.RetrieveUpdateDestroyAPIView):
         post_instance = self.get_object()
 
         title = request.data.get('title')
-        image = request.data.get('image')
+        image = request.FILES.get('image') or request.data.get('image')
         description = request.data.get('description')
         tags = request.data.get('tags')
         category_id = request.data.get('category')
