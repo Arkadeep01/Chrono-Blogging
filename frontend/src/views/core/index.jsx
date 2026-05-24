@@ -4,10 +4,13 @@ import Header from "../partials/header";
 import Footer from "../partials/footer";
 
 import TrendingSection from "../../components/storySection";
+import AdShowcase from "../../components/AdShowcase";
+import UserReviews from "../../components/UserReviews";
+import CommunityCTA from "../../components/CommunityCTA";
 import apiInstance from "../../utils/axios";
 import { fetchAllPages } from "../../utils/fetchAllPages";
 
-const TRENDING_LIMIT = 10;
+const TRENDING_LIMIT = 6;
 
 function Index() {
   const [loading, setLoading] = useState(true);
@@ -179,6 +182,10 @@ function Index() {
           </div>
         </div>
       </section>
+
+      <AdShowcase />
+      <UserReviews />
+      <CommunityCTA />
 
       <Footer />
     </>

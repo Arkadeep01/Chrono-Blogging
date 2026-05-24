@@ -7,12 +7,15 @@ function StorySection({
   title = "Stories",
   showHeader = true,
   withContainer = true,
+  maxPosts = null,
+  cardsOnly = false,
 }) {
   const navigate = useNavigate();
+  const displayPosts = typeof maxPosts === "number" ? posts.slice(0, maxPosts) : posts;
 
-  const heroPost = posts[0];
-  const sidePosts = posts.slice(1, 3);
-  const remainingPosts = posts.slice(3);
+  const heroPost = cardsOnly ? null : displayPosts[0];
+  const sidePosts = cardsOnly ? [] : displayPosts.slice(1, 3);
+  const remainingPosts = cardsOnly ? displayPosts : displayPosts.slice(3);
 
   const cleanText = (html = "") => {
     return html
@@ -37,7 +40,7 @@ function StorySection({
           <h2 className="stories-section-title">{title}</h2>
 
           <Link to="/stories" className="stories-section-link">
-            {posts.length} posts
+            {displayPosts.length} posts
           </Link>
         </div>
       )}

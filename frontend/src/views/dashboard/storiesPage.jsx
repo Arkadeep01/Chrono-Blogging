@@ -50,6 +50,10 @@ function StoriesPage() {
     .filter((p) => !usedIds.has(p.id))
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, SECTION_LIMIT);
+  
+  const allStoriesPosts = [...filteredPosts].sort(
+    (a, b) => new Date(b.date) - new Date(a.date)
+  );
 
   if (loading) {
     return (
@@ -92,10 +96,10 @@ function StoriesPage() {
           </div>
         ) : (
           <>
-            <StorySection title="Trending Stories" posts={trendingPosts} />
-            <StorySection title="Popular Stories" posts={popularPosts} />
-            <StorySection title="Latest Stories" posts={latestPosts} />
-            <StorySection title="All Stories" posts={filteredPosts} />
+            <StorySection title="Trending Stories" posts={trendingPosts} maxPosts={6} />
+            <StorySection title="Popular Stories" posts={popularPosts} maxPosts={6} />
+            <StorySection title="Latest Stories" posts={latestPosts} maxPosts={6} />
+            <StorySection title="All Stories" posts={allStoriesPosts} cardsOnly={true} />
           </>
         )}
       </div>

@@ -83,6 +83,7 @@ function App() {
             <Route path="/about/" element={<About />} />
             <Route path="/contact/" element={<Contact />} />
             <Route path="/press" element={<Press />} />
+
             <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
             <Route path="/register/" element={<PublicRoute><Register /></PublicRoute>} />
             <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
@@ -90,6 +91,7 @@ function App() {
             <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
             <Route path="/forgot-password/" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
             <Route path="/create-password" element={<PublicRoute><CreatePassword /></PublicRoute>} />
+            
             <Route path="/dashboard/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
             <Route path="/author/:id/" element={<AuthorProfile />}/>
             <Route path="/posts/" element={<PrivateRoute><Posts /></PrivateRoute>} />
