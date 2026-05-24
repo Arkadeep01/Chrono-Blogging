@@ -1,8 +1,10 @@
 import axios from 'axios';
-import { clearAuthSession, getRefreshToken, isAccessTokenExpired, setAuthUser } from './auth'; 
+import { clearAuthSession, getRefreshToken, isAccessTokenExpired, setAuthUser } from './auth';
 import { API_BASE_URL } from './constants';
 import Cookies from 'js-cookie';
 import { useAuthStore } from '../store/auth';
+
+let refreshPromise = null;
 
 // Define a custom Axios instance creator function
 const useAxios = () => {
@@ -22,26 +24,25 @@ const useAxios = () => {
 
             // CHECK TOKEN EXPIRY
             if (accessToken && !isAccessTokenExpired(accessToken)) {
-                
-                req.headers.Authorization = `Bearer ${accessToken}`;        // Attach valid access token
+                req.headers.Authorization = `Bearer ${accessToken}`;
                 return req;
             }
 
-            // REFRESH TOKEN FLOW
             if (refreshToken) {
                 try {
-                    const response = await getRefreshToken(refreshToken);
-                    setAuthUser(response.access, response.refresh || refreshToken);               // Update stored tokens
-                    req.headers.Authorization = `Bearer ${response.access}`;          // Attach new access token to request
+                    if (!refreshPromise) {
+                        refreshPromise = getRefreshToken(refreshToken).finally(() => {
+                            refreshPromise = null;
+                        });
+                    }
+                    const response = await refreshPromise;
+                    setAuthUser(response.access, response.refresh || refreshToken);
+                    req.headers.Authorization = `Bearer ${response.access}`;
                     return req;
                 } catch (error) {
                     console.error('Token refresh failed:', error);
-
-                    // Optional: clear auth & redirect
                     clearAuthSession();
-                    window.location.href = '/login';
-
-                    return Promise.reject(error);
+                    return req;
                 }
             }
             return req;
@@ -55,10 +56,8 @@ const useAxios = () => {
         async (error) => {
 
             // If unauthorized → force logout
-            if (error.response?.status === 401) {
+            if (error.response?.status === 401 && !error.config?.url?.includes('user/token/refresh')) {
                 clearAuthSession();
-
-                window.location.href = '/login';
             }
 
             return Promise.reject(error);

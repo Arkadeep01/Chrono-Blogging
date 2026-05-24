@@ -1,5 +1,5 @@
 import { useAuthStore } from "../store/auth";
-import axios from "./axios";
+import authClient from "./authClient";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
@@ -31,7 +31,7 @@ export const clearAuthSession = () => {
 
 export const login = async (email, password) => {
     try {
-        const { data, status } = await axios.post("user/token/", {
+        const { data, status } = await authClient.post("user/token/", {
             email,
             password,
         });
@@ -55,7 +55,7 @@ export const login = async (email, password) => {
 
 export const register = async (full_name, email, password, password2) => {
     try {
-        const { data } = await axios.post("user/register/", {
+        const { data } = await authClient.post("user/register/", {
             full_name,
             email,
             password,
@@ -131,7 +131,7 @@ export const setAuthUser = (access_token, refresh_token) => {
 
 export const getRefreshToken = async (refreshToken) => {
     const refresh_token = refreshToken || Cookies.get(REFRESH_TOKEN_COOKIE);
-    const response = await axios.post("user/token/refresh/", {
+    const response = await authClient.post("user/token/refresh/", {
         refresh: refresh_token,
     });
     return response.data;

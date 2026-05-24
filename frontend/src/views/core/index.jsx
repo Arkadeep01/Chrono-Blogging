@@ -5,6 +5,7 @@ import Footer from "../partials/footer";
 
 import TrendingSection from "../../components/storySection";
 import apiInstance from "../../utils/axios";
+import { fetchAllPages } from "../../utils/fetchAllPages";
 
 function Index() {
   const [loading, setLoading] = useState(true);
@@ -18,13 +19,13 @@ function Index() {
       try {
         setLoading(true);
 
-        const [postRes, catRes] = await Promise.all([
-          apiInstance.get("post/lists/"),
+        const [allPosts, catRes] = await Promise.all([
+          fetchAllPages(apiInstance, "post/lists/"),
           apiInstance.get("post/category/list/"),
         ]);
 
         if (!ignore) {
-          setPosts(postRes.data?.results || postRes.data || []);
+          setPosts(allPosts);
           setCategory(catRes.data || []);
         }
       } catch (err) {

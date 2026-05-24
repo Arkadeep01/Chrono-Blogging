@@ -4,6 +4,7 @@ import Footer from "../partials/footer";
 import StorySection from "../../components/storySection";
 import Search from "../../components/Search";
 import apiInstance from "../../utils/axios";
+import { fetchAllPages } from "../../utils/fetchAllPages";
 
 function StoriesPage() {
   const [posts, setPosts] = useState([]);
@@ -15,20 +16,7 @@ function StoriesPage() {
     const loadPosts = async () => {
       try {
         setLoading(true);
-        let page = 1;
-        let data = [];
-        let hasNext = true;
-
-        while (hasNext) {
-          const res = await apiInstance.get("post/lists/", {
-            params: { page, page_size: 50 },
-          });
-          const pageResults = res.data?.results || res.data || [];
-          data = [...data, ...pageResults];
-          hasNext = Boolean(res.data?.next);
-          page += 1;
-        }
-
+        const data = await fetchAllPages(apiInstance, "post/lists/");
         setPosts(data);
         setFilteredPosts(data);
       } catch (err) {

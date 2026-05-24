@@ -6,6 +6,10 @@ import moment from "moment";
 import { FaUser, FaCalendarAlt, FaEye } from "react-icons/fa";
 
 import apiInstance from "../../utils/axios";
+import { fetchAllPages } from "../../utils/fetchAllPages";
+import { getMediaUrl } from "../../utils/media";
+
+const POSTS_PER_PAGE = 12;
 
 function Category() {
   const [posts, setPosts] = useState([]);
@@ -21,19 +25,23 @@ function Category() {
     const loadPosts = async () => {
       try {
         setLoading(true);
+        setCurrentPage(1);
 
-        const response = await apiInstance.get(
-          `post/category/posts/${param.blog}/`,
-          { params: { page: currentPage } }
+        const allPosts = await fetchAllPages(
+          apiInstance,
+          `post/category/posts/${param.blog}/`
         );
 
         if (!ignore) {
-          const data = response.data;
-          setPosts(data?.results || data || []);
-          setTotalPages(data?.total_pages || 1);
+          setPosts(allPosts);
+          setTotalPages(Math.max(1, Math.ceil(allPosts.length / POSTS_PER_PAGE)));
         }
       } catch (error) {
         console.error("Error fetching posts:", error);
+        if (!ignore) {
+          setPosts([]);
+          setTotalPages(1);
+        }
       } finally {
         if (!ignore) {
           setLoading(false);
@@ -46,10 +54,10 @@ function Category() {
     return () => {
       ignore = true;
     };
-  }, [param.blog, currentPage]);
+  }, [param.blog]);
 
-  const indexOfLastItem = currentPage * 4;
-  const indexOfFirstItem = indexOfLastItem - 4;
+  const indexOfLastItem = currentPage * POSTS_PER_PAGE;
+  const indexOfFirstItem = indexOfLastItem - POSTS_PER_PAGE;
   const postItems = posts.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
@@ -85,7 +93,7 @@ function Category() {
                     <img
                       className="card-img-top"
                       style={{ height: "180px", objectFit: "cover" }}
-                      src={p.image}
+                      src={getMediaUrl(p.image, "/images/default.png")}
                       alt={p.title}
                     />
 
