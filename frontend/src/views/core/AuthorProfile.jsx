@@ -191,7 +191,7 @@ function AuthorProfile() {
 
                     <div className="author-story-footer">
                       <div className="author-story-meta">
-                        <span>👁 {post.views}</span>
+                        <span>👁 {post.views ?? 0}</span>
 
                         <span>
                           <Heart size={15} /> {post.Likes?.length || 0}
@@ -203,7 +203,7 @@ function AuthorProfile() {
                         </span>
                       </div>
 
-                      <div>{moment(post.date).format("MMM D, YYYY")}</div>
+                      <div>{post.date ? moment(post.date).format("MMM D") : "--"}</div>
                     </div>
                   </div>
                 </div>

@@ -117,12 +117,12 @@ function Category() {
 
                         <div className="d-flex align-items-center gap-2 mt-2">
                           <FaCalendarAlt />
-                          {moment(p.date).format("DD MMM YYYY")}
+                          {p.date ? moment(p.date).format("MMM D") : "--"}
                         </div>
 
                         <div className="d-flex align-items-center gap-2 mt-2">
                           <FaEye />
-                          {p.views} views
+                          {p.views ?? 0} views
                         </div>
                       </div>
                     </div>

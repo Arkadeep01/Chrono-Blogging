@@ -24,6 +24,9 @@ function StorySection({
       .trim();
   };
 
+  const formatCardDate = (value) =>
+    value ? moment(value).format("MMM D") : "--";
+
   const getCategoryBadgeClass = (category) => {
     const value = (category?.slug || category?.title || "").toLowerCase().trim();
     if (!value) return "cat-general";
@@ -117,10 +120,10 @@ function StorySection({
 
                       {/* META */}
                       <div className="trending-meta">
-                        <span>👁 {heroPost.views}</span>
+                        <span>👁 {heroPost.views ?? 0}</span>
 
                         <span>
-                          {moment(heroPost.date).format("MMM D, YYYY")}
+                          {formatCardDate(heroPost.date)}
                         </span>
                       </div>
                     </div>
@@ -146,13 +149,13 @@ function StorySection({
                 />
               </div>
 
-              <div className="trending-small-body">
+                <div className="trending-small-body">
                 <div className="trending-small-top">
                   <div className={`trending-small-badge ${getCategoryBadgeClass(post.category)}`}>
                     {post.category?.title || "Technology"}
                   </div>
 
-                  <div className="trending-small-views">👁 {post.views}</div>
+                  <div className="trending-small-views">👁 {post.views ?? 0}</div>
                 </div>
 
                 <h3>{post.title}</h3>
@@ -174,6 +177,10 @@ function StorySection({
                     Author
                     {post.profile?.bio && ` | ${post.profile.bio}`}
                   </div>
+                </div>
+
+                <div className="trending-meta mt-2">
+                  <span>{formatCardDate(post.date)}</span>
                 </div>
               </div>
             </div>
@@ -225,9 +232,9 @@ function StorySection({
                   </p>
 
                   <div className="story-grid-footer">
-                    <span>👁 {post.views}</span>
+                    <span>👁 {post.views ?? 0}</span>
 
-                    <span>{moment(post.date).format("MMM D")}</span>
+                    <span>{formatCardDate(post.date)}</span>
                   </div>
                 </div>
               </div>

@@ -181,7 +181,7 @@ function Detail() {
                 </span>
 
                 <span className="detail-date">
-                  {moment(post.date).format("MMMM D, YYYY")}
+                  {post.date ? moment(post.date).format("MMM D, YYYY") : "--"}
                 </span>
               </div>
             </div>
